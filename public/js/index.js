@@ -10,10 +10,15 @@ class App extends React.Component {
         store.dispatch({type: 'ADD', ele});//生成action
     }
 
+    toggle(index){
+        store.dispatch({type:'TOGGLE', index});
+    }
+
     render() {
         return <div>
             <AddTodo addTodo={this.addTodo.bind(this)}/>
-            <TodoList todos={store.getState().todos}/>
+            <TodoList todos={store.getState().todos} toggle={this.toggle.bind(this)}/>
+            <Footer/>
         </div>
     }
 }
@@ -27,7 +32,8 @@ class TodoList extends Component {
             {
                 this.props.todos.map((ele, index)=> {
                     return <div key={index}>
-                        <input type="checkbox" onClick={this.toggle.bind(this, index)}/>{ele.todo}
+                        <input type="checkbox" checked={ele.isDone} onClick={this.toggle.bind(this, index)}/>
+                        <span style={{'textDecoration':ele.isDone?'line-through':''}}>{ele.todo}</span>
                     </div>
                 })}
         </div>
