@@ -14,11 +14,15 @@ class App extends React.Component {
         store.dispatch({type:'TOGGLE', index});
     }
 
+    filter(filterName){
+        store.dispatch({type: filterName});
+    }
+
     render() {
         return <div>
             <AddTodo addTodo={this.addTodo.bind(this)}/>
-            <TodoList todos={store.getState().todos} toggle={this.toggle.bind(this)}/>
-            <Footer/>
+            <TodoList todos={store.getState().filterTodos} toggle={this.toggle.bind(this)}/>
+            <Footer filter={this.filter.bind(this)}/>
         </div>
     }
 }
@@ -51,6 +55,19 @@ class AddTodo extends Component {
         return <div>
             <input type="text" ref="input"/>
             <button onClick={this.addTodo.bind(this)}>+</button>
+        </div>
+    }
+}
+
+class Footer extends Component{
+    filter(filterName){
+        this.props.filter(filterName);
+    }
+    render(){
+        return <div>
+            <button onClick={this.filter.bind(this, 'ALL')}>All</button>
+            <button onClick={this.filter.bind(this, 'ACTIVE')}>Active</button>
+            <button onClick={this.filter.bind(this, 'COMPLETED')}>Completed</button>
         </div>
     }
 }
